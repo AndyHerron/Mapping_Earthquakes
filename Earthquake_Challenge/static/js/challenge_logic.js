@@ -1,18 +1,26 @@
 // Add console.log to check to see if our code is working.
 console.log("working");
 
-// We create the tile layer that will be the background of our map.
+// Create the streets tile layer that will be the background of our map.
 let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
 	maxZoom: 18,
 	accessToken: API_KEY
 });
 
-// We create the second tile layer that will be the background of our map.
+// Create the satellite tile layer that will be an option our map.
 let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
 	maxZoom: 18,
 	accessToken: API_KEY
+});
+
+// Create the dark tile layer that will be an option for our map.
+let dark = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/dark-v10',
+    accessToken: API_KEY
 });
 
 // Create the map object with center, zoom level and default layer.
@@ -22,19 +30,17 @@ let map = L.map('mapid', {
 	layers: [streets]
 });
 
-// Create a base layer that holds all three maps.
-let baseMaps = {
-  "Streets": streets,
-  "Satellite": satelliteStreets
-};
+// Create a base layer that holds all 3 maps.
+let baseMaps = {Streets: streets, Satellite: satelliteStreets, Dark: dark};
 
 // 1. Add a 2nd layer group for the tectonic plate data.
 let allEarthquakes = new L.LayerGroup();
-
+let tectonicPlates = new L.LayerGroup();
 
 // 2. Add a reference to the tectonic plates group to the overlays object.
 let overlays = {
-  "Earthquakes": allEarthquakes
+  "Earthquakes": allEarthquakes,
+  "Tectonic Plates": tectonicPlates
 };
 
 // Then we add a control to the map that will allow the user to change which
@@ -85,7 +91,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
     if (magnitude === 0) {
       return 1;
     }
-    return magnitude * 4;
+    return magnitude * 5;
   }
 
   // Creating a GeoJSON layer with the retrieved data.
@@ -108,14 +114,13 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
   allEarthquakes.addTo(map);
 
   // Here we create a legend control object.
-let legend = L.control({
-  position: "bottomright"
-});
+  let legend = L.control({
+    position: "bottomright"
+  });
 
-// Then add all the details for the legend
-legend.onAdd = function() {
+  // Then add all the details for the legend
+  legend.onAdd = function() {
   let div = L.DomUtil.create("div", "info legend");
-
   const magnitudes = [0, 1, 2, 3, 4, 5];
   const colors = [
     "#98ee00",
@@ -126,7 +131,7 @@ legend.onAdd = function() {
     "#ea2c2c"
   ];
 
-// Looping through our intervals to generate a label with a colored square for each interval.
+  // Looping through our intervals to generate a label with a colored square for each interval.
   for (var i = 0; i < magnitudes.length; i++) {
     console.log(colors[i]);
     div.innerHTML +=
@@ -138,10 +143,25 @@ legend.onAdd = function() {
 
   // Finally, we our legend to the map.
   legend.addTo(map);
+});
 
+// 3. Use d3.json to make a call to get our Tectonic Plate geoJSON data.
+d3.json("https://github.com/fraxen/tectonicplates/blob/master/GeoJSON/PB2002_boundaries.json").then(function(data) {
+  // This function returns the style data for the tectonic plates we plot on the map. 
+  function styleInfo(feature) {
+    return {
+      color: "#000000",
+      stroke: true,
+      weight: 1
+    };
+  }
+  // Creating a GeoJSON layer with the retrieved data.
+  L.geoJson(data, {
+    // We set the style for each fault line using our styleInfo function.
+  style: styleInfo,
+}).addTo(tectonicPlates);
 
-  // 3. Use d3.json to make a call to get our Tectonic Plate geoJSON data.
-  d3.json().then(() {
-    
-  });
+// Then we add the tectonic plates layer to our map.
+tectonicPlates.addTo(map);
+
 });

@@ -1,7 +1,7 @@
-// Add console.log to check to see if our code is working.
+// Add console.log to check to see if the code is working.
 console.log("working");
 
-// We create the streets tile layer that will be the default background of our map.
+// Create the streets tile layer that will be the default background of our map.
 let streets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
@@ -9,7 +9,7 @@ let streets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{
     accessToken: API_KEY
 });
 
-// We create the satellite tile layer that will be an option for our map.
+// Create the satellite tile layer that will be an option for our map.
 let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
@@ -17,7 +17,7 @@ let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/
     accessToken: API_KEY
 });
 
-// We create the dark tile layer that will be an option for our map.
+// Create the dark tile layer that will be an option for our map.
 let dark = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
@@ -31,7 +31,7 @@ let baseMaps = {Streets: streets, Satellite: satelliteStreets, Dark: dark};
 // Create the earthquake layer for our map.
 let earthquakes = new L.layerGroup();
 
-// We define an object that contains the overlays.
+// Define an object that contains the overlays.
 // This overlay will be visible all the time.
 let overlays = {
     Earthquakes: earthquakes
@@ -44,7 +44,7 @@ let map = L.map("mapid", {
   layers: [streets]
 });
 
-// Then we add a control to the map that will allow the user to change
+// Then add a control to the map that will allow the user to change
 // which layers are visible.
 L.control.layers(baseMaps, overlays).addTo(map);
 
@@ -92,7 +92,7 @@ function getRadius(magnitude) {
   if (magnitude === 0) {
     return 1;
   }
-  return magnitude * 4;
+  return magnitude * 5;
 };
 
 // Retrieve the earthquake GeoJSON data.
