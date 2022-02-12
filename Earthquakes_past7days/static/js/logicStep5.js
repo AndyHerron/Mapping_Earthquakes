@@ -9,7 +9,7 @@ let streets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{
     accessToken: API_KEY
 });
 
-// We create the dark tile layer that will be an option for our map.
+// We create the satellite tile layer that will be an option for our map.
 let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
@@ -17,8 +17,16 @@ let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/
     accessToken: API_KEY
 });
 
-// Create a base layer that holds both maps.
-let baseMaps = {Streets: streets, Satellite: satelliteStreets};
+// We create the dark tile layer that will be an option for our map.
+let dark = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/dark-v10',
+    accessToken: API_KEY
+});
+
+// Create a base layer that holds all 3 maps.
+let baseMaps = {Streets: streets, Satellite: satelliteStreets, Dark: dark};
 
 // Create the earthquake layer for our map.
 let earthquakes = new L.layerGroup();
