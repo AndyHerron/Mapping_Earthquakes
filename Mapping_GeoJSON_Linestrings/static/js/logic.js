@@ -31,8 +31,7 @@ let map = L.map("mapid", {
 L.control.layers(baseMaps).addTo(map);
 
 // Accessing the airport GeoJSON URL
-let torontoData = "https://raw.githubusercontent.com/AndyHerron/Mapping_Earthquakes/main/torontoRoutes.json";
-
+let torontoData = "https://github.com/AndyHerron/Mapping_Earthquakes/blob/516872bbce1daaef88378ad8e2624c7980a1c844/majorAirports.json";
 // Grabbing our GeoJSON data.
 d3.json(torontoData).then(function(data) {
     console.log(data);
