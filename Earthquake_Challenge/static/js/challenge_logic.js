@@ -215,7 +215,7 @@ d3.json("PB2002_boundaries.json").then(function(data) {
   // This function returns the style data for the tectonic plates we plot on the map. 
   function styleInfo(feature) {
     return {
-      color: "#000000",
+      color: "yellow",
       stroke: true,
       weight: 1
     };
