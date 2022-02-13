@@ -25,8 +25,8 @@ let dark = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?
 
 // Create the map object with center, zoom level and default layer.
 let map = L.map('mapid', {
-	center: [40.7, -94.5],
-	zoom: 3,
+	center: [30, 0.0],
+	zoom: 2,
 	layers: [streets]
 });
 
@@ -100,7 +100,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
   L.geoJson(data, {
     	// We turn each feature into a circleMarker on the map.
     	pointToLayer: function(feature, latlng) {
-      		console.log(data);
+      		// console.log(data);
       		return L.circleMarker(latlng);
         },
       // We set the style for each circleMarker using our styleInfo function.
@@ -163,7 +163,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geoj
   L.geoJson(data, {
   	// We turn each feature into a circleMarker on the map.
     pointToLayer: function(feature, latlng) {
-        console.log(data);
+        // console.log(data);
         return L.circleMarker(latlng);
     },
     // We set the style for each circleMarker using our styleInfo function.
@@ -199,7 +199,7 @@ legend.onAdd = function() {
 
   // Looping through our intervals to generate a label with a colored square for each interval.
   for (var i = 0; i < magnitudes.length; i++) {
-    console.log(colors[i]);
+    // console.log(colors[i]);
     div.innerHTML +=
       "<i style='background: " + colors[i] + "'></i> " +
       magnitudes[i] + (magnitudes[i + 1] ? "&ndash;" + magnitudes[i + 1] + "<br>" : "+");
@@ -211,7 +211,7 @@ legend.onAdd = function() {
 legend.addTo(map);
 
 // 3. Use d3.json to make a call to get our Tectonic Plate geoJSON data.
-d3.json("https://github.com/fraxen/tectonicplates/blob/master/GeoJSON/PB2002_boundaries.json").then(function(data) {
+d3.json("PB2002_boundaries.json").then(function(data) {
   // This function returns the style data for the tectonic plates we plot on the map. 
   function styleInfo(feature) {
     return {
